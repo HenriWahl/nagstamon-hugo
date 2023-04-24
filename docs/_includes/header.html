@@ -1,0 +1,37 @@
+<header id="nav-header" class="border-left-0 border-right-0">
+    <div id="nav-container" class="container position-relative d-flex justify-content-between align-items-center">
+      {% assign default_paths = site.pages | map: "path" %}
+      {% assign page_paths = site.header_pages | default: default_paths %}
+      <a class="h4 m-0" rel="author" href="{{ "/" | relative_url }}"><img width=180 heigth=42 src="/assets/images/nagstamon_logo.svg"></a>
+      {% if page_paths %}
+        <nav id="nav-menu-container" class="text-right navbar-light">
+          <input type="checkbox" id="nav-trigger" class="d-none"/>
+          <label for="nav-trigger" aria-label="button" class="m-2 d-inline-block d-md-none navbar-toggler-icon">
+          </label>
+  
+          <div id="nav-menu" class="d-none d-md-block p-1">
+            {% for path in page_paths %}
+              {% assign menu_page = site.pages | where: "path", path | first %}
+              {% assign download_icon = "" %}
+              {% if menu_page.title == "Download" %}
+                {% if page.path == menu_page.path %}
+                  {% assign btn_mode = "btn-secondary" %}
+                {% else %}
+                  {% assign btn_mode = "btn-success" %}
+                {% endif %}
+                {% assign download_icon="<img class='mr-1' width=16 height=16 src=/assets/images/cloud-download.svg>" %}
+              {% elsif page.path == menu_page.path %}
+                {% assign btn_mode = "btn-secondary" %}
+              {% else %}
+                {% assign btn_mode = "" %}
+              {% endif %}
+              {% if menu_page.title %}
+                <a class="btn btn-sm {{ btn_mode }} my-1 d-block d-md-inline-block"" href="{{ menu_page.url | relative_url }}">{{ download_icon }}{{ menu_page.title | escape }}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </nav>
+      {% endif %}
+    </div>
+  </header>
+  
