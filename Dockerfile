@@ -1,13 +1,11 @@
-FROM jekyll/jekyll:4
+FROM ubuntu
 
-RUN gem update bundler
+ARG HUGO_VERSION=0.120.4
 
-RUN wget -O /tmp/Gemfile https://raw.githubusercontent.com/HenriWahl/nagstamon-jekyll/main/docs/Gemfile
+RUN apt -y update &&\
+    apt -y upgrade
 
-RUN bundle install --gemfile=/tmp/Gemfile
-
-WORKDIR /jekyll
-
-CMD bundle install && \
-    bundle exec jekyll serve --host 0.0.0.0 --livereload
- 
+RUN apt -y install wget
+RUN wget -O /tmp/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb
+RUN dpkg -i /tmp/hugo.deb
+RUN rm -f /tmp/hugo.deb
